@@ -1,11 +1,11 @@
 import React from 'react';
-import { styled } from 'styled-components';
+import styled from '@emotion/styled';
 import { lightTheme } from '../../themes/themes';
 
 const Wrapper = styled.div`
     height: 100%;
     width: 100%;
-    background: ${ lightTheme.backgroundColor }
+    background: ${ lightTheme.secondaryColor };
 `
 
 const FileWindow = () => {
