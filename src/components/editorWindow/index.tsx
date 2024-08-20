@@ -3,11 +3,8 @@ import { styled } from 'styled-components';
 import { Panel, PanelGroup } from 'react-resizable-panels';
 import EditorMenu from '../editorMenu'
 import ResizeHandle from '../ResizeHandle';
-
-const Editor = styled.div`
-    background: #ABC4B4
-    height: 100%;
-`
+import NodeEditor from '../nodeEditor';
+import '@xyflow/react/dist/style.css'
 
 const Inspector = styled.div`
     background: #DECABA;
@@ -25,10 +22,10 @@ const MenuEditorWrapper = styled.div`
 const EditorWindow = () => {
     return (
         <PanelGroup direction="vertical">
-            <Panel defaultSize={70} minSize={20}>
+            <Panel defaultSize={80} minSize={20}>
                 <MenuEditorWrapper>
                     <EditorMenu/>
-                    <Editor>Editor</Editor>
+                    <NodeEditor></NodeEditor>
                 </MenuEditorWrapper>
             </Panel>
             <ResizeHandle/>

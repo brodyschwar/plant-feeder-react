@@ -6,3 +6,10 @@ export const lightTheme = {
     backgroundColor: '#FFFCFD',
     primaryFont: "'Nunito', sans-serif",
 };
+
+export const nodeColors = {
+    yellow: '#F4D35E',
+    green: '#70EE9C',
+    puple: '#DCCCFF',
+    red: '#D8315B'
+}
