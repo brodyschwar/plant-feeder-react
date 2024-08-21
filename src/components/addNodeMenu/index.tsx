@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { Divider, Menu, MenuItem } from '@mui/material';
-import { Position, useReactFlow, XYPosition } from "@xyflow/react";
+import { useReactFlow, XYPosition } from "@xyflow/react";
 import { EditorManagerContext } from "../../contexts/nodeEditorContext";
 
 const AddNodeMenu = (props: {position: XYPosition, handleClose: () => void }) => {
@@ -10,7 +10,7 @@ const AddNodeMenu = (props: {position: XYPosition, handleClose: () => void }) =>
         () => {
             addNodes({ 
                 id: generateId(), 
-                data: { label: 'Node 1' }, 
+                data: { label: 'Node 1', number: 1 }, 
                 position: screenToFlowPosition(props.position),
                 type: "compositeNode" 
             })

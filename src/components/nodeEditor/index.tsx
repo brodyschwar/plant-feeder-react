@@ -21,6 +21,8 @@ import {
     type OnConnectEnd,
     type OnConnectStart,
     NodeMouseHandler,
+    Background,
+    BackgroundVariant
 } from '@xyflow/react';
 import { 
     RootNode, 
@@ -123,7 +125,9 @@ const NodeEditor = () => {
                 defaultEdgeOptions={defaultEdgeOptions}
                 zoomOnDoubleClick={false}
                 onDoubleClick={onDoubleClick}
-                />
+                >
+            <Background color={lightTheme.primaryColor} variant={BackgroundVariant.Dots} />
+            </ReactFlow>
             {position && <AddNodeMenu position={position} handleClose={handleClose}/>}
         </Editor>
     )
