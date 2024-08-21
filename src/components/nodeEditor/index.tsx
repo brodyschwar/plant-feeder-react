@@ -32,7 +32,7 @@ import {
 } from '../nodes';
 import AddNodeMenu from '../addNodeMenu';
 import { EditorManagerContext } from '../../contexts/nodeEditorContext';
-
+import { NODE_MENU_LAYOUT } from '../../data';
 const Editor = styled.div`
     background: ${ darkTheme.degreeTwo };
     flex: auto;
@@ -104,7 +104,6 @@ const NodeEditor = () => {
 
     const onNodeDoubleClicked: NodeMouseHandler<Node> = (event: React.MouseEvent, node: Node) => {
         event.stopPropagation()
-        console.log(node)
         setInspectedNode(node);
     }
 
@@ -128,7 +127,15 @@ const NodeEditor = () => {
                 >
             <Background color={darkTheme.primaryColor} variant={BackgroundVariant.Dots} />
             </ReactFlow>
-            {position && <AddNodeMenu position={position} handleClose={handleClose}/>}
+            {
+                position && 
+                <AddNodeMenu 
+                    position={position} 
+                    handleClose={handleClose}
+                    menuItems={[]}
+                    subMenus={NODE_MENU_LAYOUT}
+                    />
+            }
         </Editor>
     )
 }

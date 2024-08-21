@@ -41,8 +41,8 @@ const CustomHandle = styled(Handle)`
 `
 
 interface LimitedConnectionHandleProps extends HandleProps {
-    nodeId: string,
-    maxConnections: number
+    nodeid: string,
+    maxconnection: number
 }
 
 const LimitedConnectionHandle = (props: LimitedConnectionHandleProps) => {
@@ -52,7 +52,7 @@ const LimitedConnectionHandle = (props: LimitedConnectionHandleProps) => {
     return (
         <CustomHandle
             {...props}
-            isConnectable={connections.length < props.maxConnections}/>
+            isConnectable={connections.length < props.maxconnection}/>
     )
 }
 
@@ -68,8 +68,8 @@ const RootNode = (props: NodeProps) => {
             <LimitedConnectionHandle type="source"
                     position={Position.Bottom}
                     id={"root"}
-                    nodeId={props.id}
-                    maxConnections={1}/>
+                    nodeid={props.id}
+                    maxconnection={1}/>
         </NodeContainer>
         
     );
@@ -81,7 +81,7 @@ const CompositeNode = (props: NodeProps) => {
             <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.puple}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={nodeColors.yellow}>
@@ -100,7 +100,7 @@ const BehaviorNode = (props: NodeProps) => {
             <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.green}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={nodeColors.green}>

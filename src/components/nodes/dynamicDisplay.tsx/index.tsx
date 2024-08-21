@@ -11,13 +11,17 @@ const DisplayItem = ({name, value} : {name: string, value: string}) => {
 
 const DynamicDisplay=({data} : { data: any}) => {
     return (
-        <List dense>
+        <div>
+            <List dense>
             {
-                Object.entries(data).map(([key, value]) => {
+                Object.entries(data).filter(([key, value]) => key !== "label" && value)
+                .map(([key, value]) => {
                     return <DisplayItem key={key} name={key} value={String(value)}/>
                 })
             }
-        </List>
+            </List>
+        </div>
+        
     )
 }
 
