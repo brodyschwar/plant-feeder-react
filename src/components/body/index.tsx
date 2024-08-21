@@ -11,7 +11,7 @@ const Body = () => {
                 <FileWindow/>
             </Panel>
             <ResizeHandle/>
-            <Panel defaultSize={70} minSize={20}>
+            <Panel defaultSize={80} minSize={20}>
                 <EditorWindow/>
             </Panel>
         </PanelGroup>

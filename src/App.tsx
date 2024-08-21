@@ -1,7 +1,8 @@
 import React from 'react';
 import Body from './components/body';
 import Header from './components/header';
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
+import NodeEditorContextProvider from './contexts/nodeEditorContext';
 
 const Group = styled.div`
     background: #EB8258;
@@ -14,8 +15,9 @@ const Group = styled.div`
 function App() {
   return (
     <Group>
-      <Header></Header>
-      <Body></Body>
+      <NodeEditorContextProvider>
+        <Body/>
+      </NodeEditorContextProvider>
     </Group>
   );
 }

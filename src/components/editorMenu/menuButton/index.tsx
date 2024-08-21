@@ -1,8 +1,8 @@
-import React from "react";
 import styled from "@emotion/styled";
 import { lightTheme } from "../../../themes/themes";
+import { Button } from "@mui/material";
 
-const MenuButton = styled.button`
+const MenuButton = styled(Button)`
     height: 100%;
     background: ${ lightTheme.textColor };
     border-radius: 0.2rem;
