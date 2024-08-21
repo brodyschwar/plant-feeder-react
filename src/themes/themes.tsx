@@ -1,8 +1,11 @@
-export const lightTheme = {
+export const darkTheme = {
     primaryColor: '#D8315B',
     secondaryColor: '#30506E',
     tertiaryColor: '#72E1D1',
-    textColor: '#172633',
+    baseColor: '#172633',
+    degreeTwo: '#1D303F',
+    degreeThree: '#233B4D',
+    degreeFour: '#2A455B',
     backgroundColor: '#FFFCFD',
     primaryFont: "'Nunito', sans-serif",
 };

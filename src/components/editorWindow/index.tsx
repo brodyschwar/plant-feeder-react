@@ -5,11 +5,7 @@ import EditorMenu from '../editorMenu'
 import ResizeHandle from '../ResizeHandle';
 import NodeEditor from '../nodeEditor';
 import '@xyflow/react/dist/style.css'
-
-const Inspector = styled.div`
-    background: #DECABA;
-    height: 100%;
-`
+import FileWindow from '../fileWindow';
 
 const MenuEditorWrapper = styled.div`
     height: 100%;
@@ -30,7 +26,7 @@ const EditorWindow = () => {
             </Panel>
             <ResizeHandle/>
             <Panel defaultSize={20} minSize={10}>
-                <Inspector>Inspector</Inspector>
+                <FileWindow></FileWindow>
             </Panel>
         </PanelGroup>
     )

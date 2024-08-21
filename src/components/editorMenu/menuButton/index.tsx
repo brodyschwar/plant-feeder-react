@@ -1,16 +1,16 @@
 import styled from "@emotion/styled";
-import { lightTheme } from "../../../themes/themes";
+import { darkTheme } from "../../../themes/themes";
 import { Button } from "@mui/material";
 
 const MenuButton = styled(Button)`
     height: 100%;
-    background: ${ lightTheme.textColor };
+    background: ${ darkTheme.baseColor };
     border-radius: 0.2rem;
     border: none;
-    color: ${ lightTheme.primaryColor };
+    color: ${ darkTheme.primaryColor };
     flex-align: right;
     &:hover {
-        background: ${ lightTheme.secondaryColor };
+        background: ${ darkTheme.secondaryColor };
     }
 `
 

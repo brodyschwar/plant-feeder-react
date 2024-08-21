@@ -1,16 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Handle, NodeProps, Position } from "@xyflow/react";
-import { lightTheme, nodeColors } from "../../themes/themes";
+import { Handle, HandleProps, NodeProps, Position, useHandleConnections } from "@xyflow/react";
+import { darkTheme, nodeColors } from "../../themes/themes";
 import DynamicDisplay from "./dynamicDisplay.tsx";
 
 const NodeContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 8rem;
+    margin: 0;
 `
 
-const NodeTitle = styled.div<{ color: string}>`
+const NodeTitle = styled.div<{ color: string, selected: boolean }>`
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   display: flex;
@@ -18,33 +20,56 @@ const NodeTitle = styled.div<{ color: string}>`
   text-transform: uppercase;
   align-items: center;
   font-weight: bold;
-  padding: 1rem;
-  width: 100%;
+  font-size: 14px;
+  padding: 0.3rem;
   background-color: ${props => props.color};
-  border: 0.1rem solid ${props => props.color};
+  outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${props => props.color};
 `;
 
-const NodeBody = styled.div<{ color: string }>`
-    border: 0.1rem solid ${ props => props.color };
-    padding: 1rem;
+const NodeBody = styled.div<{ color: string, selected: boolean }>`
+    outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${ props => props.color };
+    padding: 0.3rem;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    width: 100%;
-    background: ${ lightTheme.backgroundColor };
+    background: ${ darkTheme.backgroundColor };
 `
+
+const CustomHandle = styled(Handle)`
+    height: 0.5rem;
+    width: 0.5rem;
+    background: ${ darkTheme.baseColor };
+`
+
+interface LimitedConnectionHandleProps extends HandleProps {
+    nodeId: string,
+    maxConnections: number
+}
+
+const LimitedConnectionHandle = (props: LimitedConnectionHandleProps) => {
+    const connections = useHandleConnections({
+        type: props.type
+      });
+    return (
+        <CustomHandle
+            {...props}
+            isConnectable={connections.length < props.maxConnections}/>
+    )
+}
 
 const RootNode = (props: NodeProps) => {
     return (
         <NodeContainer>
-            <NodeTitle color={ nodeColors.red }>
+            <NodeTitle selected={!!props.selected} color={ nodeColors.red }>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody color={ nodeColors.red }>
+            <NodeBody selected={!!props.selected} color={ nodeColors.red }>
                 { props.data && <DynamicDisplay data={props.data}/> }
             </NodeBody> 
-            <Handle type="source"
+            <LimitedConnectionHandle type="source"
                     position={Position.Bottom}
-                    id={"root"}/>
+                    id={"root"}
+                    nodeId={props.id}
+                    maxConnections={1}/>
         </NodeContainer>
         
     );
@@ -53,16 +78,16 @@ const RootNode = (props: NodeProps) => {
 const CompositeNode = (props: NodeProps) => {
     return (
         <NodeContainer>
-            <Handle type="target"
+            <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody color={nodeColors.yellow}>
+            <NodeBody selected={!!props.selected} color={nodeColors.yellow}>
                 { props.data && <DynamicDisplay data={props.data}/> }
             </NodeBody>
-            <Handle type="source"
+            <CustomHandle type="source"
                     position={Position.Bottom}
                     id={"exit"}/>
         </NodeContainer>
@@ -72,13 +97,13 @@ const CompositeNode = (props: NodeProps) => {
 const BehaviorNode = (props: NodeProps) => {
     return (
         <NodeContainer>
-            <Handle type="target"
+            <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody color={nodeColors.green}>
+            <NodeBody selected={!!props.selected} color={nodeColors.green}>
                 { props.data && <DynamicDisplay data={props.data}/> }
             </NodeBody>
         </NodeContainer>
@@ -88,16 +113,16 @@ const BehaviorNode = (props: NodeProps) => {
 const DecoratorNode = (props: NodeProps) => {
     return (
         <NodeContainer>
-            <Handle type="target"
+            <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody color={nodeColors.green}>
+            <NodeBody selected={!!props.selected} color={nodeColors.green}>
                 { props.data && <DynamicDisplay data={props.data}/> }
             </NodeBody>
-            <Handle type="source"
+            <CustomHandle type="source"
                     position={Position.Top}
                     id={"exit"}/>
         </NodeContainer>

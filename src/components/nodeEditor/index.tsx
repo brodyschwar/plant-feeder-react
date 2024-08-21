@@ -6,7 +6,7 @@ import React, {
     useContext
 } from 'react';
 import styled from '@emotion/styled';
-import { lightTheme } from '../../themes/themes';
+import { darkTheme } from '../../themes/themes';
 import { 
     ReactFlow, 
     addEdge,
@@ -34,14 +34,14 @@ import AddNodeMenu from '../addNodeMenu';
 import { EditorManagerContext } from '../../contexts/nodeEditorContext';
 
 const Editor = styled.div`
-    background: ${ lightTheme.backgroundColor };
+    background: ${ darkTheme.degreeTwo };
     flex: auto;
     width: 100%;
 `
 
 const initialNodes: Node[] = [
     {
-        id: 'provider-1',
+        id: 'root',
         type: 'rootNode',
         data: { label: 'Root' },
         position: { x: 5, y: 5 },
@@ -126,7 +126,7 @@ const NodeEditor = () => {
                 zoomOnDoubleClick={false}
                 onDoubleClick={onDoubleClick}
                 >
-            <Background color={lightTheme.primaryColor} variant={BackgroundVariant.Dots} />
+            <Background color={darkTheme.primaryColor} variant={BackgroundVariant.Dots} />
             </ReactFlow>
             {position && <AddNodeMenu position={position} handleClose={handleClose}/>}
         </Editor>
