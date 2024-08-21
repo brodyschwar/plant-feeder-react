@@ -68,7 +68,7 @@ const NodeEditor = () => {
     const connectingNodeId = useRef<string | null>(null);
     const [position, setPosition] = useState<XYPosition | null>(null);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+    const [nodes, _, onNodesChange] = useNodesState(initialNodes)
     const { setInspectedNode } = useContext(EditorManagerContext)
 
     const onConnect: OnConnect = useCallback(
@@ -76,7 +76,7 @@ const NodeEditor = () => {
             connectingNodeId.current = null
             setEdges((els) => addEdge(params, els))
         },
-        [],
+        [setEdges],
     );
 
     const onConnectStart: OnConnectStart = useCallback((_, { nodeId }) => {

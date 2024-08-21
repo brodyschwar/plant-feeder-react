@@ -1,5 +1,6 @@
 import React, { ReactNode, Context, createContext, useState, useCallback, useContext } from "react"
-import { ReactFlowProvider, useNodes, useReactFlow, type Node } from "@xyflow/react"
+import { 
+    ReactFlowProvider, useNodes, useNodesState, useReactFlow, type Node } from "@xyflow/react"
 
 interface EditorManagerData {
     generateId: () => string,
@@ -30,7 +31,6 @@ const EditorManagerProvider = ({children}: {children: ReactNode}) => {
         },
         [getNodes]
     )
-
     return (
         <EditorManagerContext.Provider value={{ 
             generateId: generateId,

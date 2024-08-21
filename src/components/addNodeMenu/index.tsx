@@ -4,13 +4,13 @@ import { useReactFlow, XYPosition } from "@xyflow/react";
 import { EditorManagerContext } from "../../contexts/nodeEditorContext";
 import { BehaviorTreeNode, BehaviorTreeNodeMenuLayout } from "../../data";
 
-interface AddNodeItem {
+interface AddNodeItemProps {
     requestNode: ({data, type}: {data: BehaviorTreeNode, type: string}) => void
     data: BehaviorTreeNode,
     type: string
 }
 
-const AddNodeItem = (props: AddNodeItem) => {
+const AddNodeItem = (props: AddNodeItemProps) => {
     const createNode = () => {
         props.requestNode({ data: props.data, type: props.type })
     }
@@ -19,16 +19,16 @@ const AddNodeItem = (props: AddNodeItem) => {
     )
 }
 
-interface AddNodeMenu {
+interface AddNodeMenuProps {
     menuItems: { data: BehaviorTreeNode, type: string }[]
     subMenus: BehaviorTreeNodeMenuLayout[]
     position: XYPosition, 
     handleClose: () => void
 }
 
-const AddNodeMenu = (props: AddNodeMenu) => {
+const AddNodeMenu = (props: AddNodeMenuProps) => {
     const { addNodes, screenToFlowPosition } = useReactFlow()
-    const [subMenuProps, setSubMenuProps] = useState<AddNodeMenu | null>(null);
+    const [subMenuProps, setSubMenuProps] = useState<AddNodeMenuProps | null>(null);
     const { generateId } = useContext(EditorManagerContext)
     const addCompositeNode = useCallback(
         ({data, type}: {data: any, type: string}) => {
@@ -50,7 +50,7 @@ const AddNodeMenu = (props: AddNodeMenu) => {
             position: { x: event.clientX, y: event.clientY },
             handleClose: props.handleClose
         })
-    }, [])
+    }, [props.handleClose])
 
     return (
         <div>

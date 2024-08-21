@@ -1,6 +1,5 @@
 import React from 'react';
 import Body from './components/body';
-import Header from './components/header';
 import styled from '@emotion/styled';
 import NodeEditorContextProvider from './contexts/nodeEditorContext';
 

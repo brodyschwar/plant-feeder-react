@@ -1,14 +1,14 @@
 import React from "react";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import EditorWindow from "../editorWindow";
-import FileWindow from "../fileWindow";
 import ResizeHandle from "../ResizeHandle";
+import InspectorWindow from "../inspectorWindow";
 
 const Body = () => {
     return (
         <PanelGroup direction="horizontal">
             <Panel defaultSize={20} minSize={10}>
-                <FileWindow/>
+                <InspectorWindow/>
             </Panel>
             <ResizeHandle/>
             <Panel defaultSize={80} minSize={20}>
