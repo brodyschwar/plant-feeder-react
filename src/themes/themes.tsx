@@ -1,7 +1,10 @@
 export const darkTheme = {
     primaryColor: '#D8315B',
-    secondaryColor: '#30506E',
-    tertiaryColor: '#72E1D1',
+    primaryComplementary: '#31d8ae',
+    secondaryColor: '#d831ae',
+    secondaryComplementary: '#d85b31',
+    tertiaryColor: '#d8ae31',
+    tertiaryComplementary: '#5bd831',
     baseColor: '#172633',
     degreeTwo: '#1D303F',
     degreeThree: '#233B4D',
@@ -11,8 +14,8 @@ export const darkTheme = {
 };
 
 export const nodeColors = {
-    yellow: '#F4D35E',
-    green: '#70EE9C',
-    puple: '#DCCCFF',
-    red: '#D8315B'
+    yellow: darkTheme.secondaryComplementary,
+    green: darkTheme.tertiaryComplementary,
+    puple: darkTheme.secondaryColor,
+    red: darkTheme.primaryColor
 }

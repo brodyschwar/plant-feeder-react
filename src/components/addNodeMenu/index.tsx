@@ -66,7 +66,10 @@ const AddNodeMenu = (props: AddNodeMenuProps) => {
                     return <AddNodeItem key={data.label} data={data} type={type} requestNode={addCompositeNode}/>
                 })
             }
-            <Divider/>
+            {
+                props.menuItems.length > 0 && props.subMenus.length > 0 &&
+                <Divider/>
+            }
             {
                 props.subMenus.map((submenu: BehaviorTreeNodeMenuLayout) => {
                     return <MenuItem key={submenu.name} onClick={(event: MouseEvent) => {handleSubMenuClick(event, submenu)}}>
