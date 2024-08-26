@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useState, MouseEvent } from "react";
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { useReactFlow, XYPosition } from "@xyflow/react";
-import { EditorManagerContext } from "../../contexts/nodeEditorContext";
-import { BehaviorTreeNode, BehaviorTreeNodeMenuLayout } from "../../data";
+import { EditorManagerContext } from "../../../contexts/nodeEditorContext";
+import { BehaviorTreeNode, BehaviorTreeNodeMenuLayout } from "../../../data";
 
 interface AddNodeItemProps {
     requestNode: ({data, type}: {data: BehaviorTreeNode, type: string}) => void

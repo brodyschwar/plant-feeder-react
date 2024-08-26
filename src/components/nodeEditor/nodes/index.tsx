@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Handle, HandleProps, NodeProps, Position, useHandleConnections } from "@xyflow/react";
-import { darkTheme, nodeColors } from "../../themes/themes";
+import { darkTheme, nodeColors } from "../../../themes/themes";
 import DynamicDisplay from "./dynamicDisplay.tsx";
 
 const NodeContainer = styled.div`
@@ -28,16 +28,15 @@ const NodeTitle = styled.div<{ color: string, selected: boolean }>`
 
 const NodeBody = styled.div<{ color: string, selected: boolean }>`
     outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${ props => props.color };
-    padding: 0.3rem;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    background: ${ darkTheme.backgroundColor };
+    padding: 0.5rem 0.2rem;
+    background: ${ darkTheme.baseColor };
 `
 
 const CustomHandle = styled(Handle)`
     height: 0.5rem;
     width: 0.5rem;
-    background: ${ darkTheme.baseColor };
 `
 
 interface LimitedConnectionHandleProps extends HandleProps {

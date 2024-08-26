@@ -5,11 +5,11 @@ export const darkTheme = {
     secondaryComplementary: '#d85b31',
     tertiaryColor: '#d8ae31',
     tertiaryComplementary: '#5bd831',
-    baseColor: '#172633',
-    degreeTwo: '#1D303F',
-    degreeThree: '#233B4D',
-    degreeFour: '#2A455B',
-    backgroundColor: '#FFFCFD',
+    baseColor: '#ffffff',
+    degreeTwo: '#f5f5f5',
+    degreeThree: '#c4c4c4',
+    degreeFour: '#9d9d9d',
+    backgroundColor: '#000000',
     primaryFont: "'Nunito', sans-serif",
 };
 

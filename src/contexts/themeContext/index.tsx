@@ -3,16 +3,24 @@ import { ThemeProvider as MUIThemeProvider, createTheme } from "@mui/material";
 import { darkTheme } from "../../themes/themes";
 
 const theme = createTheme({
-    palette: {
-        contrastThreshold: 4.5,
-        primary: {
-            main: darkTheme.primaryColor
-        },
-        secondary: {
-            main: darkTheme.secondaryColor
+  palette: {
+    primary: {
+      main: darkTheme.primaryColor,
+    },
+    secondary: {
+      main: darkTheme.primaryComplementary,
+    },
+  },
+  components: {
+    MuiFormLabel: {
+        styleOverrides: {
         }
-    }
-})
+    },
+    MuiTextField: {
+      },
+  },
+});
+
 
 const ThemeProvider = ({children}: { children: ReactNode }) => {
     return (

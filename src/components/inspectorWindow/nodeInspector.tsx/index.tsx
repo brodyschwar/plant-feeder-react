@@ -25,18 +25,20 @@ const NodeInspector = () => {
     }
 
     return (
-        <Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.5rem", padding: "0.5rem"}}>
             {
                 temporaryData &&
                 Object.entries(temporaryData).filter(([key, value]) => key !== "label")
                 .map(([key, value], index) => 
                     <TextField 
+                        fullWidth
                         key={index} 
                         label={key} 
-                        variant="standard" 
+                        variant="outlined"
                         value={value ? value : ""}
                         onChange={handleChange(key)}
-                        onBlur={handleExit}/>
+                        onBlur={handleExit}
+                        size="small"/>
                 )
             }
         </Box>

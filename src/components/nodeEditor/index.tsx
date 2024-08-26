@@ -29,8 +29,8 @@ import {
     CompositeNode, 
     BehaviorNode,
     DecoratorNode
-} from '../nodes';
-import AddNodeMenu from '../addNodeMenu';
+} from './nodes';
+import AddNodeMenu from './addNodeMenu';
 import { EditorManagerContext } from '../../contexts/nodeEditorContext';
 import { NODE_MENU_LAYOUT } from '../../data';
 const Editor = styled.div`
