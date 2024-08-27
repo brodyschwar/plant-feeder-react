@@ -18,7 +18,7 @@ const ServerInputLoader = ({onConnect} : {onConnect: (props: ServerConnectionPro
     }
     
     return (
-        <Box sx={{display: "flex", alignItems: "center"}}>
+        <Box sx={{display: "flex", alignItems: "center", padding: "0.4rem"}}>
             <TextField label="Hostname" sx={{ input: {color: darkTheme.primaryColor}}} value={hostname} onChange={onChange(setHostname)} size="small"/>
             <Typography sx={{color: darkTheme.primaryColor}}>:</Typography>
             <TextField label="Port" sx={{ input: {color: darkTheme.primaryColor}}}  value={port} onChange={onChange(setPort)} size="small"/>

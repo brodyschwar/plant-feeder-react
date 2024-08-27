@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import NodeEditorContextProvider from './contexts/nodeEditorContext';
 import ThemeProvider from './contexts/themeContext';
 import FileMangerProvider from './contexts/fileManager';
+import ToastProvider from './contexts/Toast';
 
 const Group = styled.div`
     background: #EB8258;
@@ -17,11 +18,13 @@ function App() {
   return (
     <Group>
       <ThemeProvider>
-        <NodeEditorContextProvider>
-          <FileMangerProvider>
-            <Body/>
-          </FileMangerProvider>
-        </NodeEditorContextProvider>
+        <ToastProvider>
+          <NodeEditorContextProvider>
+            <FileMangerProvider>
+              <Body/>
+            </FileMangerProvider>
+          </NodeEditorContextProvider>
+        </ToastProvider>
       </ThemeProvider>
     </Group>
   );

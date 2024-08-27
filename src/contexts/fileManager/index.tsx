@@ -1,11 +1,12 @@
 import axios from "axios"
-import React, { ReactNode, createContext, useState, useCallback } from "react"
+import React, { ReactNode, createContext, useState, useCallback, useContext } from "react"
 import { buildFolderStructure } from "../../utils/fileOperations"
+import { ToastContext, Toast } from "../Toast"
 
 interface FileManager {
     openFilename: string
     fileStructure: null | Folder
-    connectToHost: (props: {hostname: string, port: string}) => void
+    connectToHost: (props: {hostname: string, port: string}) => void,
 }
 
 export interface File {
@@ -29,6 +30,7 @@ const initialFileManager: FileManager = {
 export const FileManagerContext = createContext<FileManager>(initialFileManager)
 
 const FileMangerProvider = ({children}: {children: ReactNode}) => {
+    const { sendMessage } = useContext(ToastContext)
     const [openFilename, setOpenFilename] = useState("");
     const [fileStructure, setFileStructure] = useState<null | Folder>(null);
     const [hostname, setHostname] = useState<string>("");
@@ -42,9 +44,21 @@ const FileMangerProvider = ({children}: {children: ReactNode}) => {
         .then(reponse => {
             const build = buildFolderStructure(reponse.data.files);
             setFileStructure(build)
+            sendMessage({
+                severity: "success",
+                message: `Connect to ${props.hostname}:${props.port}`,
+                key: String(Date.now())
+            })
         })
-        .catch(error => console.error("Error: ", error))
-    }, [])
+        .catch(error => {
+            console.error("Error: ", error)
+            sendMessage({
+                severity: "error",
+                message: `Could not connect to ${props.hostname}:${props.port}`,
+                key: String(Date.now())
+            })
+        })
+    }, [sendMessage])
 
     return (
         <FileManagerContext.Provider value={{

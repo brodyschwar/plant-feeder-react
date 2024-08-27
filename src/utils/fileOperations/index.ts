@@ -12,7 +12,7 @@ export const buildFolderStructure = (items: { type: string, name: string, path: 
         throw new Error('Unknown type');
     };
 
-    const root: Folder = { name: "", fullName: "", folders: [], files: [] };
+    const root: Folder = { name: "root", fullName: "", folders: [], files: [] };
     const folderMap: { [path: string]: Folder } = { "" : root};
 
     // Initialize folders

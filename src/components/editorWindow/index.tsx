@@ -6,7 +6,6 @@ import ResizeHandle from '../ResizeHandle';
 import NodeEditor from '../nodeEditor';
 import '@xyflow/react/dist/style.css'
 import FileWindow from '../fileWindow';
-import FileSystemBar from '../fileSytemBar';
 
 const MenuEditorWrapper = styled.div`
     height: 100%;
@@ -23,12 +22,11 @@ const EditorWindow = () => {
                 <MenuEditorWrapper>
                     <EditorMenu/>
                     <NodeEditor></NodeEditor>
-                    <FileSystemBar/>
                 </MenuEditorWrapper>
             </Panel>
             <ResizeHandle/>
             <Panel defaultSize={20} minSize={10}>
-                <FileWindow></FileWindow>
+                <FileWindow/>
             </Panel>
         </PanelGroup>
     )
