@@ -3,6 +3,7 @@ import Body from './components/body';
 import styled from '@emotion/styled';
 import NodeEditorContextProvider from './contexts/nodeEditorContext';
 import ThemeProvider from './contexts/themeContext';
+import FileMangerProvider from './contexts/fileManager';
 
 const Group = styled.div`
     background: #EB8258;
@@ -17,7 +18,9 @@ function App() {
     <Group>
       <ThemeProvider>
         <NodeEditorContextProvider>
-          <Body/>
+          <FileMangerProvider>
+            <Body/>
+          </FileMangerProvider>
         </NodeEditorContextProvider>
       </ThemeProvider>
     </Group>

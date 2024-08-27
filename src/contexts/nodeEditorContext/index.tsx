@@ -1,6 +1,9 @@
 import React, { ReactNode, Context, createContext, useState, useCallback } from "react"
 import { 
-    ReactFlowProvider, useReactFlow, type Node } from "@xyflow/react"
+    ReactFlowProvider, 
+    useReactFlow, 
+    type Node 
+} from "@xyflow/react"
 
 interface EditorManagerData {
     generateId: () => string,
