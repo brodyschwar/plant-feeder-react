@@ -19,11 +19,11 @@ function App() {
     <Group>
       <ThemeProvider>
         <ToastProvider>
+        <FileMangerProvider>
           <NodeEditorContextProvider>
-            <FileMangerProvider>
               <Body/>
-            </FileMangerProvider>
           </NodeEditorContextProvider>
+          </FileMangerProvider>
         </ToastProvider>
       </ThemeProvider>
     </Group>

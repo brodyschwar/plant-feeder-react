@@ -12,7 +12,8 @@ interface FileManager {
     deletePath: (item: File | Folder) => void,
     makeDir: (dirname: string) => void,
     makeFileFromTemplate: (filePath: string, template: object) => void,
-    loadFile: (file: File) => void
+    loadFile: (file: File) => void,
+    save: (data: NodeEditorFile) => void
 }
 
 export interface File {
@@ -35,7 +36,8 @@ const initialFileManager: FileManager = {
     deletePath: (item: File | Folder) => {},
     makeDir: (dirname: string) => {},
     makeFileFromTemplate: (filePath: string, template: object) => {},
-    loadFile: (file: File) => {}
+    loadFile: (file: File) => {},
+    save: (data: NodeEditorFile) => {}
 }
 
 export const FileManagerContext = createContext<FileManager>(initialFileManager)
@@ -158,6 +160,35 @@ const FileMangerProvider = ({children}: {children: ReactNode}) => {
             })
         })
     }, [openFile, sendMessage, hostname, port])
+
+    const save = useCallback(async (data: NodeEditorFile) => {
+        if (openFile === null) {
+            sendMessage({
+                severity: "error",
+                message: `Cannot save since there is no open file`,
+                key: String(Date.now())
+            });
+            return;
+        }
+        
+        await axios.post(`http://${hostname}:${port}/file-operations/save`, { filename: openFile.fullName, data})
+        .then(() =>
+            sendMessage({
+                severity: "success",
+                message: "Successfully saved!",
+                key: String(Date.now())
+            })
+        )
+        .catch(error => {
+            console.error("Error: ", error)
+            sendMessage({
+                severity: "error",
+                message: `Could not create save`,
+                key: String(Date.now())
+            })
+        })
+    }, [sendMessage, hostname, port, openFile])
+    
     return (
         <FileManagerContext.Provider value={{
             openFile,
@@ -167,7 +198,8 @@ const FileMangerProvider = ({children}: {children: ReactNode}) => {
             deletePath,
             makeDir,
             makeFileFromTemplate,
-            loadFile
+            loadFile,
+            save
         }}>
             {children}
         </FileManagerContext.Provider>
