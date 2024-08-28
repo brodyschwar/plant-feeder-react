@@ -1,8 +1,7 @@
 import React, { ReactNode, Context, createContext, useState, useCallback } from "react"
 import { 
-    ReactFlowProvider, 
-    useReactFlow, 
-    type Node 
+    ReactFlowProvider,  
+    type Node
 } from "@xyflow/react"
 
 interface EditorManagerData {
@@ -21,18 +20,11 @@ export const EditorManagerContext: Context<EditorManagerData> = createContext(em
 
 const EditorManagerProvider = ({children}: {children: ReactNode}) => {
     const [inspectedNode, setInspectedNode] = useState<null | Node>(null)
-    const { getNodes } = useReactFlow()
     const generateId: () => string = useCallback(
         () => {
-            var id = "";
-            var unique = false;
-            while (!unique) {
-                id = `${Date.now()}_${Math.floor(Math.random()*100)}`
-                unique = !getNodes().some((node) => node.id === id)
-            }
-            return id
+            return `${Date.now()}_${Math.floor(Math.random()*100)}`
         },
-        [getNodes]
+        []
     )
     return (
         <EditorManagerContext.Provider value={{ 

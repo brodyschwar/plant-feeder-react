@@ -24,6 +24,22 @@ const Wrapper = styled.div`
     flex-direction: column;
 `
 
+const reconcileDirectoryStack = (oldStack: Folder[], newFilseStructure: Folder): Folder[] => {
+    function isFolderIn(folder: Folder, subfolder: Folder): boolean {
+        console.log(subfolder)
+        const found = folder.folders.findIndex((dir: Folder) => dir.fullName === subfolder.fullName)
+        return found !== -1
+    }
+
+    var newStack: Folder[] = [newFilseStructure]
+    var i = 1
+    while(i < oldStack.length && isFolderIn(newStack[newStack.length-1], oldStack[i])) {
+        newStack.push(oldStack[i]);
+        i += 1;
+    }
+    return newStack
+}
+
 const FileWindow = () => {
     const [directoryStack, setDirectoryStack] = useState<Folder[]>([])
     const { fileStructure } = useContext(FileManagerContext)
@@ -33,7 +49,7 @@ const FileWindow = () => {
 
     useEffect(() => {
         if (fileStructure !== null) {
-            setDirectoryStack([fileStructure]);
+            setDirectoryStack((oldStack) => reconcileDirectoryStack(oldStack, fileStructure));
         } else {
             setDirectoryStack([]);
         }
