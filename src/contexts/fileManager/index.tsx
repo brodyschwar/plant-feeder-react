@@ -2,14 +2,16 @@ import axios from "axios"
 import React, { ReactNode, createContext, useState, useCallback, useContext } from "react"
 import { buildFolderStructure } from "../../utils/fileOperations"
 import { Toast, ToastContext } from "../Toast"
-import { BEHAVIOR_TREE_TEMPLATE } from "../../data/templates"
 
 interface FileManager {
+    openFile: null | File,
+    fileData: null | Object
     fileStructure: null | Folder
     connectToHost: (props: {hostname: string, port: string}) => void,
     deletePath: (item: File | Folder) => void,
     makeDir: (dirname: string) => void,
-    makeFileFromTemplate: (filePath: string, template: object) => void
+    makeFileFromTemplate: (filePath: string, template: object) => void,
+    loadFile: (file: File) => void
 }
 
 export interface File {
@@ -25,26 +27,21 @@ export interface Folder {
 }
 
 const initialFileManager: FileManager = {
+    openFile: null,
+    fileData: null,
     fileStructure: null,
     connectToHost: (props: {hostname: string, port: string}) => {},
     deletePath: (item: File | Folder) => {},
     makeDir: (dirname: string) => {},
-    makeFileFromTemplate: (filePath: string, template: object) => {}
+    makeFileFromTemplate: (filePath: string, template: object) => {},
+    loadFile: (file: File) => {}
 }
 
 export const FileManagerContext = createContext<FileManager>(initialFileManager)
 
-export const useBehaviorTreeTemplate = () => {
-    const { makeFileFromTemplate } = useContext(FileManagerContext);
-
-    const makeFile = useCallback((filePath: string) => {
-        makeFileFromTemplate(filePath, BEHAVIOR_TREE_TEMPLATE)
-    }, [makeFileFromTemplate])
-
-    return makeFile
-}
-
 const FileMangerProvider = ({children}: {children: ReactNode}) => {
+    const [openFile, setOpenFile] = useState<null | File>(null);
+    const [fileData, setFileData] = useState<null | Object>(null)
     const { sendMessage } = useContext(ToastContext)
     const [fileStructure, setFileStructure] = useState<null | Folder>(null);
     const [hostname, setHostname] = useState<string>("");
@@ -141,13 +138,44 @@ const FileMangerProvider = ({children}: {children: ReactNode}) => {
         })
     }, [loadFileStructure, hostname, port, sendMessage])
 
+    const loadFileFromDatabase = useCallback(async (filePath: string) => {
+        axios.get(`http://${hostname}:${port}/file-operations/load/${filePath}`)
+        .then(response => {
+            sendMessage({
+                severity: "success",
+                message: `Successfully loaded ${filePath} from database`,
+                key: String(Date.now())
+            })
+            return response.data
+        })
+        .catch(error => {
+            console.error("Error: ", error)
+            sendMessage({
+                severity: "error",
+                message: `Could not create File ${filePath}`,
+                key: String(Date.now())
+            })
+        })
+    }, [hostname, port, sendMessage])
+
+    const loadFile = useCallback((file: File) => {
+        if (file.fullName === openFile?.fullName) return;
+
+        const fileData = loadFileFromDatabase(file.fullName);
+
+        setFileData(fileData);
+        setOpenFile(file)
+    }, [openFile, loadFileFromDatabase])
     return (
         <FileManagerContext.Provider value={{
-            fileStructure: fileStructure,
-            connectToHost: connectToHost,
-            deletePath: deletePath,
-            makeDir: makeDir,
-            makeFileFromTemplate: makeFileFromTemplate
+            openFile,
+            fileData,
+            fileStructure,
+            connectToHost,
+            deletePath,
+            makeDir,
+            makeFileFromTemplate,
+            loadFile
         }}>
             {children}
         </FileManagerContext.Provider>

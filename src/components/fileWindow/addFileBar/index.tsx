@@ -1,7 +1,8 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Button, Modal, Paper, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField } from "@mui/material";
 import { Folder as FolderIcon, AccountTree } from "@mui/icons-material";
-import { FileManagerContext, Folder, useBehaviorTreeTemplate } from "../../../contexts/fileManager";
+import { FileManagerContext, Folder } from "../../../contexts/fileManager";
+import { useBehaviorTreeTemplate } from "../../../hooks/fileManager";
 
 interface AddFileModalProps {
     type: string,

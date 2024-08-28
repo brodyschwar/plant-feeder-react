@@ -34,7 +34,7 @@ interface FileMenuProps {
 }
 
 export const FileMenu = (props: FileMenuProps) => {
-    const { deletePath } = useContext(FileManagerContext)
+    const { deletePath, loadFile } = useContext(FileManagerContext)
     return (
         <Menu
             open
@@ -44,7 +44,7 @@ export const FileMenu = (props: FileMenuProps) => {
             anchorReference='anchorPosition'
             anchorPosition={{top: props.menuPosition.y, left: props.menuPosition.x}}
             >
-            <MenuItem onClick={props.open(props.file)}>Open</MenuItem>
+            <MenuItem onClick={() => loadFile(props.file)}>Open</MenuItem>
             <MenuItem onClick={() => deletePath(props.file)}>Delete</MenuItem>
         </Menu>
     )
