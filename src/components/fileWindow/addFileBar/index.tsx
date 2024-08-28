@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Button, Modal, Paper, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField } from "@mui/material";
 import { Folder as FolderIcon, AccountTree } from "@mui/icons-material";
-import { Folder } from "../../../contexts/fileManager";
+import { FileManagerContext, Folder, useBehaviorTreeTemplate } from "../../../contexts/fileManager";
 
 interface AddFileModalProps {
     type: string,
@@ -30,7 +30,7 @@ const AddFileModal = (props: AddFileModalProps) => {
                 <h2>{`Create ${props.type}`}</h2>
                 <TextField error={!isValid} label={`${props.type} Name`} value={fileName} onChange={(event) => setFileName(event.target.value)}/>
                 {!isValid && <p>Name is not valid</p>}
-                <Button onClick={() => onClick()}>ADD</Button>
+                <Button onClick={onClick}>ADD</Button>
             </Paper>
         </Modal>
     )
@@ -38,11 +38,16 @@ const AddFileModal = (props: AddFileModalProps) => {
 
 const AddFileBar = ({display, currentDirectory}: {display: boolean, currentDirectory: Folder}) => {
     const [modalProps, setModalProps] = useState<AddFileModalProps | null>(null)
+    const makeFile = useBehaviorTreeTemplate();
+    const { makeDir } = useContext(FileManagerContext);
+
     const validateFilename = useCallback((fileName: string) => {
-        return fileName !== "" && currentDirectory.files.findIndex(file => file.name === fileName) === -1
+        const regex = /^[^\s/]+\.json$/i;
+        return regex.test(fileName) && currentDirectory.files.findIndex(file => file.name === fileName) === -1
     }, [currentDirectory.files])
-    const validateFoldername = useCallback((fileName: string) => {
-        return fileName !== "" && currentDirectory.folders.findIndex(folder => folder.name === fileName) === -1
+    const validateFoldername = useCallback((folderName: string) => {
+        const regex = /^[^\s/.]+$/;
+        return regex.test(folderName) && currentDirectory.folders.findIndex(folder => folder.name === folderName) === -1
     }, [currentDirectory.folders])
 
     const handleClose = useCallback(() => {
@@ -54,20 +59,20 @@ const AddFileBar = ({display, currentDirectory}: {display: boolean, currentDirec
             type: "File",
             open: true,
             validate: validateFilename,
-            onSubmit: (filename) => {},
+            onSubmit: (filename) => makeFile(filename),
             handleClose: handleClose
         }
-    }, [validateFilename, handleClose])
+    }, [validateFilename, handleClose, makeFile])
 
     const addFolderModalProps: AddFileModalProps = useMemo(() => {
         return {
             type: "Folder",
             open: true,
             validate: validateFoldername,
-            onSubmit: (filename) => {},
+            onSubmit: (foldername: string) => makeDir(currentDirectory.fullName + "/" + foldername),
             handleClose: handleClose
         }
-    }, [validateFoldername, handleClose])
+    }, [validateFoldername, handleClose, currentDirectory.fullName, makeDir])
 
     const handleClick = (props: AddFileModalProps) => () => {
         setModalProps(props)

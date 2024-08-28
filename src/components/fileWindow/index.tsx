@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState, MouseEvent } from 'react';
 import styled from '@emotion/styled';
 import { darkTheme } from '../../themes/themes';
 import { FileManagerContext, Folder, File } from '../../contexts/fileManager';
-import { Button, Box, Menu, MenuItem, SpeedDial, SpeedDialIcon, IconButton, SpeedDialAction } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import { AccountTree, Folder as FolderIcon } from '@mui/icons-material';
 import FileSystemBar from './fileSytemBar';
 import AddFileBar from './addFileBar';
+import { FileMenu, FolderMenu } from './fileWindowMenus';
 
 const ItemDisplay = ({name, type, openMenu}: {name: string, type: "tree" | "folder", openMenu: (event: MouseEvent<HTMLButtonElement>) => void}) => {
     return (
@@ -26,16 +27,16 @@ const Wrapper = styled.div`
 `
 
 const reconcileDirectoryStack = (oldStack: Folder[], newFilseStructure: Folder): Folder[] => {
-    function isFolderIn(folder: Folder, subfolder: Folder): boolean {
-        console.log(subfolder)
-        const found = folder.folders.findIndex((dir: Folder) => dir.fullName === subfolder.fullName)
-        return found !== -1
+    function getSubFolderIndex(folder: Folder, subfolder: Folder): number {
+        return folder.folders.findIndex((dir: Folder) => dir.fullName === subfolder.fullName)
     }
 
     var newStack: Folder[] = [newFilseStructure]
     var i = 1
-    while(i < oldStack.length && isFolderIn(newStack[newStack.length-1], oldStack[i])) {
-        newStack.push(oldStack[i]);
+    while(i < oldStack.length) {
+        const index = getSubFolderIndex(newStack[newStack.length-1], oldStack[i])
+        if (index === -1) break;
+        newStack.push(newStack[newStack.length-1].folders[index]);
         i += 1;
     }
     return newStack
@@ -102,29 +103,18 @@ const FileWindow = () => {
                 ))
                 }
                 { menuPosition && focuseDir &&
-                    <Menu
-                        open={Boolean(menuPosition)}
-                        onClose={handleClose}
-                        onClick={handleClose}
-                        id="file-menu"
-                        anchorReference='anchorPosition'
-                        anchorPosition={{top: menuPosition.y, left: menuPosition.x}}
-                        >
-                        <MenuItem onClick={openFolder(focuseDir)}>Open</MenuItem>
-                        <MenuItem>Delete</MenuItem>
-                    </Menu>
+                    <FolderMenu
+                        menuPosition={menuPosition}
+                        folder={focuseDir}
+                        handleClose={handleClose}
+                        open={openFolder}/>
                 }
                 { menuPosition && focusFile &&
-                    <Menu
-                        open={Boolean(menuPosition)}
-                        onClose={handleClose}
-                        onClick={handleClose}
-                        id="file-menu"
-                        anchorReference='anchorPosition'
-                        anchorPosition={{top: menuPosition.y, left: menuPosition.x}}
-                        >
-                        <MenuItem>Delete</MenuItem>
-                    </Menu>
+                    <FileMenu
+                        menuPosition={menuPosition}
+                        file={focusFile}
+                        handleClose={handleClose}
+                        open={(f: File) => () => {}}/>
                 }
             </Box>
             </Box>
