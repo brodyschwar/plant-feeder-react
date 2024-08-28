@@ -1,12 +1,12 @@
 import axios from "axios"
 import React, { ReactNode, createContext, useState, useCallback, useContext } from "react"
 import { buildFolderStructure } from "../../utils/fileOperations"
-import { ToastContext, Toast } from "../Toast"
+import { ToastContext } from "../Toast"
 
 interface FileManager {
-    openFilename: string
     fileStructure: null | Folder
     connectToHost: (props: {hostname: string, port: string}) => void,
+    delete: (item: File | Folder) => void
 }
 
 export interface File {
@@ -22,16 +22,16 @@ export interface Folder {
 }
 
 const initialFileManager: FileManager = {
-    openFilename: "",
     fileStructure: null,
-    connectToHost: (props: {hostname: string, port: string}) => {}
+    connectToHost: (props: {hostname: string, port: string}) => {},
+    delete: (item: File | Folder) => {}
+
 }
 
 export const FileManagerContext = createContext<FileManager>(initialFileManager)
 
 const FileMangerProvider = ({children}: {children: ReactNode}) => {
     const { sendMessage } = useContext(ToastContext)
-    const [openFilename, setOpenFilename] = useState("");
     const [fileStructure, setFileStructure] = useState<null | Folder>(null);
     const [hostname, setHostname] = useState<string>("");
     const [port, setPort] = useState<string>("");
@@ -60,11 +60,30 @@ const FileMangerProvider = ({children}: {children: ReactNode}) => {
         })
     }, [sendMessage])
 
+    const deleteItem = useCallback(async (item: File | Folder) => {
+        await axios.post(`http://${hostname}:${port}/file-operations/delete-file`, { filename: item.fullName })
+        .then(response => {
+            sendMessage({
+                severity: "success",
+                message: `Removed ${item.fullName}`,
+                key: String(Date.now())
+            })
+        })
+        .catch(error => {
+            console.error("Error: ", error)
+            sendMessage({
+                severity: "error",
+                message: `Could not delete ${item.fullName}`,
+                key: String(Date.now())
+            })
+        })
+    }, [sendMessage, hostname, port])
+
     return (
         <FileManagerContext.Provider value={{
-            openFilename: openFilename,
             fileStructure: fileStructure,
-            connectToHost: connectToHost
+            connectToHost: connectToHost,
+            delete: deleteItem
         }}>
             {children}
         </FileManagerContext.Provider>

@@ -12,7 +12,13 @@ const FileSystemBar = ({directoryStack, setCurrentDirectory}: {directoryStack: F
             <Breadcrumbs sx={{flexGrow: "1"}}>
                 {directoryStack.length !== 0 &&
                 directoryStack.map((folder: Folder, index) => (
-                    <Button key={index} onClick={() => setCurrentDirectory(folder)}>{folder.name}</Button>
+                    <Button 
+                        sx={{textTransform: 'none'}} 
+                        key={index} 
+                        onClick={() => setCurrentDirectory(folder)} 
+                        >
+                        {folder.name}
+                    </Button>
                 ))
                 }
             </Breadcrumbs>
