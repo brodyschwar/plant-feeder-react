@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState, MouseEvent } from 'react';
 import styled from '@emotion/styled';
 import { darkTheme } from '../../themes/themes';
 import { FileManagerContext, Folder, File } from '../../contexts/fileManager';
-import { Button, Box, Menu, MenuItem } from '@mui/material';
+import { Button, Box, Menu, MenuItem, SpeedDial, SpeedDialIcon, IconButton, SpeedDialAction } from '@mui/material';
 import { AccountTree, Folder as FolderIcon } from '@mui/icons-material';
 import FileSystemBar from './fileSytemBar';
+import AddFileBar from './addFileBar';
 
 const ItemDisplay = ({name, type, openMenu}: {name: string, type: "tree" | "folder", openMenu: (event: MouseEvent<HTMLButtonElement>) => void}) => {
     return (
-        <Button sx={{minWidth: "10rem", justifyContent: "left", textTransform: "none", gap: "1rem"}} onClick={openMenu}>
+        <Button sx={{ height: 'fit-content', minWidth: "10rem", justifyContent: "left", textTransform: "none", gap: "1rem"}} onClick={openMenu}>
             { type === 'tree' && <AccountTree/>}
             { type === 'folder' && <FolderIcon/>}
             {name}
@@ -85,6 +86,10 @@ const FileWindow = () => {
     return (
         <Wrapper>
             <FileSystemBar directoryStack={directoryStack} setCurrentDirectory={reopenFolder}/>
+            <Box sx={{display: 'flex', flexDirection: "row", padding: "1rem", gap: "1rem"}}>
+                {directoryStack.length !== 0 &&
+                <AddFileBar display={directoryStack.length !== 0} currentDirectory={directoryStack[directoryStack.length-1]}/>
+                }
             <Box sx={{display: "flex", flexFlow: "row wrap"}}>
                 { directoryStack.length !== 0 &&
                 directoryStack[directoryStack.length-1].folders.map((folder: Folder, index) => (
@@ -121,6 +126,7 @@ const FileWindow = () => {
                         <MenuItem>Delete</MenuItem>
                     </Menu>
                 }
+            </Box>
             </Box>
         </Wrapper>
         

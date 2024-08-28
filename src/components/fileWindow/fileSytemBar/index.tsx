@@ -15,6 +15,7 @@ const FileSystemBar = ({directoryStack, setCurrentDirectory}: {directoryStack: F
                     <Button 
                         sx={{textTransform: 'none'}} 
                         key={index} 
+                        disabled={index === directoryStack.length-1}
                         onClick={() => setCurrentDirectory(folder)} 
                         >
                         {folder.name}

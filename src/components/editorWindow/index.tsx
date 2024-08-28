@@ -13,19 +13,17 @@ const MenuEditorWrapper = styled.div`
     flex-direction: column;
 `
 
-
-
 const EditorWindow = () => {
     return (
         <PanelGroup direction="vertical">
-            <Panel defaultSize={80} minSize={20}>
+            <Panel defaultSize={70} minSize={20}>
                 <MenuEditorWrapper>
                     <EditorMenu/>
                     <NodeEditor></NodeEditor>
                 </MenuEditorWrapper>
             </Panel>
             <ResizeHandle/>
-            <Panel defaultSize={20} minSize={10}>
+            <Panel defaultSize={30} minSize={30}>
                 <FileWindow/>
             </Panel>
         </PanelGroup>
