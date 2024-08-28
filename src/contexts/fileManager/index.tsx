@@ -2,10 +2,11 @@ import axios from "axios"
 import React, { ReactNode, createContext, useState, useCallback, useContext } from "react"
 import { buildFolderStructure } from "../../utils/fileOperations"
 import { Toast, ToastContext } from "../Toast"
+import { isNodeEditorFile, NodeEditorFile } from "../../data/templates"
 
 interface FileManager {
     openFile: null | File,
-    fileData: null | Object
+    fileData: null | NodeEditorFile
     fileStructure: null | Folder
     connectToHost: (props: {hostname: string, port: string}) => void,
     deletePath: (item: File | Folder) => void,
@@ -41,7 +42,7 @@ export const FileManagerContext = createContext<FileManager>(initialFileManager)
 
 const FileMangerProvider = ({children}: {children: ReactNode}) => {
     const [openFile, setOpenFile] = useState<null | File>(null);
-    const [fileData, setFileData] = useState<null | Object>(null)
+    const [fileData, setFileData] = useState<null | NodeEditorFile>(null)
     const { sendMessage } = useContext(ToastContext)
     const [fileStructure, setFileStructure] = useState<null | Folder>(null);
     const [hostname, setHostname] = useState<string>("");
@@ -138,34 +139,25 @@ const FileMangerProvider = ({children}: {children: ReactNode}) => {
         })
     }, [loadFileStructure, hostname, port, sendMessage])
 
-    const loadFileFromDatabase = useCallback(async (filePath: string) => {
-        axios.get(`http://${hostname}:${port}/file-operations/load/${filePath}`)
+    const loadFile = useCallback(async (file: File) => {
+        if (file.fullName === openFile?.fullName) return;
+
+        await axios.get(`http://${hostname}:${port}/file-operations/load/${file.fullName}`)
         .then(response => {
-            sendMessage({
-                severity: "success",
-                message: `Successfully loaded ${filePath} from database`,
-                key: String(Date.now())
-            })
-            return response.data
+            if (isNodeEditorFile(response.data)) {
+                setOpenFile(file)
+                setFileData(response.data)
+            }
         })
         .catch(error => {
             console.error("Error: ", error)
             sendMessage({
                 severity: "error",
-                message: `Could not create File ${filePath}`,
+                message: `Could not create File ${file.fullName}`,
                 key: String(Date.now())
             })
         })
-    }, [hostname, port, sendMessage])
-
-    const loadFile = useCallback((file: File) => {
-        if (file.fullName === openFile?.fullName) return;
-
-        const fileData = loadFileFromDatabase(file.fullName);
-
-        setFileData(fileData);
-        setOpenFile(file)
-    }, [openFile, loadFileFromDatabase])
+    }, [openFile, sendMessage, hostname, port])
     return (
         <FileManagerContext.Provider value={{
             openFile,

@@ -1,22 +1,19 @@
-import React from "react";
-import styled from "@emotion/styled";
+import React, { useContext } from "react";
+import { Box, Typography } from "@mui/material";
 import { darkTheme } from "../../themes/themes";
-import MenuButton from "./menuButton";
-
-const Wrapper = styled.div`
-    height: 2rem;
-    width: 100%;
-    padding: 0.2rem;
-    background: ${ darkTheme.baseColor };
-    display: flex;
-`
+import ServerInputLoader from "../serverInputConnection";
+import { FileManagerContext } from "../../contexts/fileManager";
 
 
 const EditorMenu = () => {
+    const { openFile } = useContext(FileManagerContext)
     return (
-        <Wrapper>
-            <MenuButton>Button</MenuButton>
-        </Wrapper>
+        <Box sx={{width: "100%", display: "flex", alignItems: "center", background: darkTheme.baseColor}}>
+            <Typography style={{ paddingLeft: "1rem", color: darkTheme.primaryColor, flexGrow: "1"}}>
+                {openFile ? openFile.fullName : ""}
+            </Typography>
+            <ServerInputLoader onConnect={() => {}}/>
+        </Box>
     );
 };
 

@@ -3,7 +3,8 @@ import React, {
     useCallback,
     MouseEvent, 
     useRef,
-    useContext
+    useContext,
+    useEffect
 } from 'react';
 import styled from '@emotion/styled';
 import { darkTheme } from '../../themes/themes';
@@ -11,6 +12,7 @@ import {
     ReactFlow, 
     addEdge,
     type Node,
+    type Edge,
     type FitViewOptions,
     type OnConnect,
     type DefaultEdgeOptions,
@@ -33,20 +35,12 @@ import {
 import AddNodeMenu from './addNodeMenu';
 import { EditorManagerContext } from '../../contexts/nodeEditorContext';
 import { NODE_MENU_LAYOUT } from '../../data';
+import { FileManagerContext } from '../../contexts/fileManager';
 const Editor = styled.div`
     background: ${ darkTheme.degreeTwo };
     flex: auto;
     width: 100%;
 `
-
-const initialNodes: Node[] = [
-    {
-        id: 'root',
-        type: 'rootNode',
-        data: { label: 'Root' },
-        position: { x: 5, y: 5 },
-      }
-]
 
 const fitViewOptions: FitViewOptions = {
     padding: 0.2,
@@ -67,9 +61,17 @@ const nodeTypes: NodeTypes = {
 const NodeEditor = () => {
     const connectingNodeId = useRef<string | null>(null);
     const [position, setPosition] = useState<XYPosition | null>(null);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-    const [nodes, _, onNodesChange] = useNodesState(initialNodes)
-    const { setInspectedNode } = useContext(EditorManagerContext)
+    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+    const { setInspectedNode } = useContext(EditorManagerContext);
+    const { openFile, fileData } = useContext(FileManagerContext);
+
+    useEffect(() => {
+        if (fileData) {
+            setEdges(fileData.edges);
+            setNodes(fileData.nodes);
+        }
+    }, [openFile, fileData, setNodes, setEdges]);
 
     const onConnect: OnConnect = useCallback(
         (params) => {
