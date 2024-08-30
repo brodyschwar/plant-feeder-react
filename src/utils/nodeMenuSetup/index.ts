@@ -17,7 +17,6 @@ export function GenerateMenuMap(nodeList: { data: any, type: string, folder: str
                 currentPath = currentPath ? `${currentPath}/${part}` : part;
 
                 if (!folders[currentPath]) {
-                    console.log("creating folder with path " + currentPath)
                     folders[currentPath] = {
                         name: part,
                         nodes: [],
@@ -37,20 +36,14 @@ export function GenerateMenuMap(nodeList: { data: any, type: string, folder: str
 
     nodeList.forEach((node) => {
         const { folder, data, type } = node;
-        const folderPath = folder.trim(); // Make sure to trim spaces
-
-        // Get or create the folder where the node belongs
-        console.log("Trying to get folder " + folderPath)
+        const folderPath = folder.trim();
         const currentFolder = getOrCreateFolder(folderPath);
-        
-        // Add the node to the current folder's nodes list
         currentFolder.nodes.push({ data, type });
     });
 
-    // Collect top-level folders (those without a parent)
     const topLevelFolders: BehaviorTreeNodeMenuLayout[] = [];
     for (const key in folders) {
-        if (key.indexOf('/') === -1) { // No '/' means it's a top-level folder
+        if (key.indexOf('/') === -1) {
             topLevelFolders.push(folders[key]);
         }
     }
