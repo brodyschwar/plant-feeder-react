@@ -6,6 +6,7 @@ import {
     SEND_MOTOR_TO_TARGET_DEFAULT, 
     WAIT_FOR_MOTOR_TO_STOP_DEFAULT 
 } from "./behaviors/motorActions"
+import { PARRALLEL_DEFAULT, SELECTOR_DEFAULT, SEQUENCE_DEFAULT } from "./composites"
 
 export interface BehaviorTreeNodeMenuLayout {
     name: string,
@@ -35,6 +36,19 @@ const BEHAVIORS_MENU_LAYOUT: BehaviorTreeNodeMenuLayout = {
     ]
 }
 
+const COMPOSITES_MENU_LAYOUT: BehaviorTreeNodeMenuLayout = {
+    name: "Composites",
+    nodes: [
+        { data: SEQUENCE_DEFAULT, type: "compositeNode"},
+        { data: SELECTOR_DEFAULT, type: "compositeNode"},
+        { data: PARRALLEL_DEFAULT, type: "compositeNode"}
+    ],
+    nodeFiles: [
+
+    ]
+}
+
 export const NODE_MENU_LAYOUT: BehaviorTreeNodeMenuLayout[] = [
-    BEHAVIORS_MENU_LAYOUT
+    BEHAVIORS_MENU_LAYOUT,
+    COMPOSITES_MENU_LAYOUT
 ]

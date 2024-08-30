@@ -14,11 +14,13 @@ const DisplayItem = ({name, value} : {name: string, value: string}) => {
     )
 }
 
+const hiddenKeys = ['className', 'label']
+
 const DynamicDisplay=({data} : { data: any}) => {
     return (
         <Box sx={{display: "flex", flexDirection: "column", gap: "0.5rem"}}>
             {
-            Object.entries(data).filter(([key, value]) => key !== "label" && value)
+            Object.entries(data).filter(([key, value]) => !hiddenKeys.some(hk => hk === key) && value)
             .map(([key, value]) => {
                 return <DisplayItem key={key} name={key} value={String(value)}/>
             })

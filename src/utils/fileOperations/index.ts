@@ -1,7 +1,6 @@
 import { File, Folder } from '../../contexts/fileManager/index'
 
 export const buildFolderStructure = (items: { type: string, name: string, path: string }[]): Folder => {
-    // Helper function to create a Folder or File
     const createItem = (type: string, name: string, path: string): Folder | File => {
         const fullName = path;
         if (type === 'file') {

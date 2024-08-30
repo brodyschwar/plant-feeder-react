@@ -80,7 +80,7 @@ const CompositeNode = (props: NodeProps) => {
             <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle selected={!!props.selected} color={nodeColors.puple}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={nodeColors.yellow}>
@@ -115,14 +115,14 @@ const DecoratorNode = (props: NodeProps) => {
             <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.puple}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody selected={!!props.selected} color={nodeColors.green}>
+            <NodeBody selected={!!props.selected} color={nodeColors.puple}>
                 { props.data && <DynamicDisplay data={props.data}/> }
             </NodeBody>
             <CustomHandle type="source"
-                    position={Position.Top}
+                    position={Position.Bottom}
                     id={"exit"}/>
         </NodeContainer>
     )

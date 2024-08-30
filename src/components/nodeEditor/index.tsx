@@ -34,8 +34,10 @@ import {
 } from './nodes';
 import AddNodeMenu from './addNodeMenu';
 import { EditorManagerContext } from '../../contexts/nodeEditorContext';
-import { NODE_MENU_LAYOUT } from '../../data';
 import { FileManagerContext } from '../../contexts/fileManager';
+import { NODE_LIST } from '../../data/generatedNodes';
+import { GenerateMenuMap } from '../../utils/nodeMenuSetup';
+
 const Editor = styled.div`
     background: ${ darkTheme.degreeTwo };
     flex: auto;
@@ -56,7 +58,9 @@ const nodeTypes: NodeTypes = {
     behaviorNode: BehaviorNode,
     decoratorNode: DecoratorNode
 }
-   
+
+
+const BASE_MENU = GenerateMenuMap(NODE_LIST)
 
 const NodeEditor = () => {
     const connectingNodeId = useRef<string | null>(null);
@@ -135,7 +139,7 @@ const NodeEditor = () => {
                     position={position} 
                     handleClose={handleClose}
                     menuItems={[]}
-                    subMenus={NODE_MENU_LAYOUT}
+                    subMenus={BASE_MENU}
                     />
             }
         </Editor>
