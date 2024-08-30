@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useState, MouseEvent } from "react";
+import React, { useCallback, useState, MouseEvent } from "react";
 import { Divider, Menu, MenuItem } from '@mui/material';
-import { useReactFlow, XYPosition } from "@xyflow/react";
-import { EditorManagerContext } from "../../../contexts/nodeEditorContext";
+import { XYPosition } from "@xyflow/react";
 import { BehaviorTreeNodeMenuLayout } from "../../../utils/nodeMenuSetup";
 
 interface AddNodeItemProps {
@@ -23,34 +22,22 @@ interface AddNodeMenuProps {
     menuItems: { data: any, type: string }[]
     subMenus: BehaviorTreeNodeMenuLayout[]
     position: XYPosition, 
+    addNodeFromMenu: ({data, type}: {data: any, type: string}) => () => void
     handleClose: () => void
 }
 
 const AddNodeMenu = (props: AddNodeMenuProps) => {
-    const { addNodes, screenToFlowPosition } = useReactFlow()
     const [subMenuProps, setSubMenuProps] = useState<AddNodeMenuProps | null>(null);
-    const { generateId } = useContext(EditorManagerContext)
-    const addCompositeNode = useCallback(
-        ({data, type}: {data: any, type: string}) => {
-            addNodes({ 
-                id: generateId(), 
-                data: data, 
-                position: screenToFlowPosition(props.position),
-                type: type 
-            })
-            props.handleClose()
-        },
-        [addNodes, props, screenToFlowPosition, generateId]
-    );
 
     const handleSubMenuClick = useCallback((event: MouseEvent, submenu: BehaviorTreeNodeMenuLayout) => {
         setSubMenuProps({
             menuItems: submenu.nodes,
             subMenus: submenu.nodeFiles,
             position: { x: event.clientX, y: event.clientY },
+            addNodeFromMenu: props.addNodeFromMenu,
             handleClose: props.handleClose
         })
-    }, [props.handleClose])
+    }, [props.handleClose, props.addNodeFromMenu])
 
     return (
         <div>
@@ -63,7 +50,7 @@ const AddNodeMenu = (props: AddNodeMenuProps) => {
             >
             {
                 props.menuItems.map(({data, type}: {data: any, type: string}) => {
-                    return <AddNodeItem key={data.label} data={data} type={type} requestNode={addCompositeNode}/>
+                    return <AddNodeItem key={data.label} data={data} type={type} requestNode={props.addNodeFromMenu({data, type})}/>
                 })
             }
             {

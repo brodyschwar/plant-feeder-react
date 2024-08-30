@@ -37,6 +37,7 @@ import { EditorManagerContext } from '../../contexts/nodeEditorContext';
 import { FileManagerContext } from '../../contexts/fileManager';
 import { NODE_LIST } from '../../data/generatedNodes';
 import { GenerateMenuMap } from '../../utils/nodeMenuSetup';
+import { useAddNodeFromMenu } from '../../hooks/nodeHooks';
 
 const Editor = styled.div`
     background: ${ darkTheme.degreeTwo };
@@ -69,6 +70,10 @@ const NodeEditor = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
     const { setInspectedNode } = useContext(EditorManagerContext);
     const { openFile, fileData } = useContext(FileManagerContext);
+    const handleClose = () => {
+        setPosition(null);
+    }
+    const addNodeFromMenu = useAddNodeFromMenu(handleClose)
 
     useEffect(() => {
         if (fileData) {
@@ -104,10 +109,6 @@ const NodeEditor = () => {
         setPosition({ x: event.clientX, y: event.clientY });
     }
 
-    const handleClose = () => {
-        setPosition(null);
-    }
-
     const onNodeDoubleClicked: NodeMouseHandler<Node> = (event: React.MouseEvent, node: Node) => {
         event.stopPropagation()
         setInspectedNode(node);
@@ -137,6 +138,7 @@ const NodeEditor = () => {
                 position && 
                 <AddNodeMenu 
                     position={position} 
+                    addNodeFromMenu={addNodeFromMenu(position, connectingNodeId.current)}
                     handleClose={handleClose}
                     menuItems={[]}
                     subMenus={BASE_MENU}
