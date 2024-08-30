@@ -2,11 +2,11 @@ import React, { useCallback, useContext, useState, MouseEvent } from "react";
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { useReactFlow, XYPosition } from "@xyflow/react";
 import { EditorManagerContext } from "../../../contexts/nodeEditorContext";
-import { BehaviorTreeNode, BehaviorTreeNodeMenuLayout } from "../../../data";
+import { BehaviorTreeNodeMenuLayout } from "../../../utils/nodeMenuSetup";
 
 interface AddNodeItemProps {
-    requestNode: ({data, type}: {data: BehaviorTreeNode, type: string}) => void
-    data: BehaviorTreeNode,
+    requestNode: ({data, type}: {data: any, type: string}) => void
+    data: any,
     type: string
 }
 
@@ -20,7 +20,7 @@ const AddNodeItem = (props: AddNodeItemProps) => {
 }
 
 interface AddNodeMenuProps {
-    menuItems: { data: BehaviorTreeNode, type: string }[]
+    menuItems: { data: any, type: string }[]
     subMenus: BehaviorTreeNodeMenuLayout[]
     position: XYPosition, 
     handleClose: () => void
@@ -62,7 +62,7 @@ const AddNodeMenu = (props: AddNodeMenuProps) => {
             onClose={props.handleClose}
             >
             {
-                props.menuItems.map(({data, type}: {data: BehaviorTreeNode, type: string}) => {
+                props.menuItems.map(({data, type}: {data: any, type: string}) => {
                     return <AddNodeItem key={data.label} data={data} type={type} requestNode={addCompositeNode}/>
                 })
             }
