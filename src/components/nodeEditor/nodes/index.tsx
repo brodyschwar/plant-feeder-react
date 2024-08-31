@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Handle, HandleProps, NodeProps, Position, useHandleConnections } from "@xyflow/react";
 import { darkTheme, nodeColors } from "../../../themes/themes";
-import DynamicDisplay from "./dynamicDisplay.tsx";
+import NodeDataDisplay from "../../nodeDataDisplay";
 
 const NodeContainer = styled.div`
     display: flex;
@@ -55,6 +55,8 @@ const LimitedConnectionHandle = (props: LimitedConnectionHandleProps) => {
     )
 }
 
+const hiddenKeys = ['label', 'className']
+
 const RootNode = (props: NodeProps) => {
     return (
         <NodeContainer>
@@ -62,7 +64,7 @@ const RootNode = (props: NodeProps) => {
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={ nodeColors.red }>
-                { props.data && <DynamicDisplay data={props.data}/> }
+                { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
             </NodeBody> 
             <LimitedConnectionHandle type="source"
                     position={Position.Bottom}
@@ -84,7 +86,7 @@ const CompositeNode = (props: NodeProps) => {
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={nodeColors.yellow}>
-                { props.data && <DynamicDisplay data={props.data}/> }
+                { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
             </NodeBody>
             <CustomHandle type="source"
                     position={Position.Bottom}
@@ -103,7 +105,7 @@ const BehaviorNode = (props: NodeProps) => {
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={nodeColors.green}>
-                { props.data && <DynamicDisplay data={props.data}/> }
+                { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
             </NodeBody>
         </NodeContainer>
     );
@@ -119,7 +121,7 @@ const DecoratorNode = (props: NodeProps) => {
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
             <NodeBody selected={!!props.selected} color={nodeColors.puple}>
-                { props.data && <DynamicDisplay data={props.data}/> }
+                { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
             </NodeBody>
             <CustomHandle type="source"
                     position={Position.Bottom}
