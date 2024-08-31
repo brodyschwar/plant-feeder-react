@@ -23,11 +23,11 @@ const NodeTitle = styled.div<{ color: string, selected: boolean }>`
   font-size: 14px;
   padding: 0.3rem;
   background-color: ${props => props.color};
-  outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${props => props.color};
+  outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${ props => props.selected? nodeColors.highlighted : props.color };
 `;
 
 const NodeBody = styled.div<{ color: string, selected: boolean }>`
-    outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${ props => props.color };
+    outline: ${ props => props.selected ? "0.3rem" : "0.1rem"} solid ${ props => props.selected? nodeColors.highlighted : props.color };
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
     padding: 0.5rem 0.2rem;
@@ -82,10 +82,10 @@ const CompositeNode = (props: NodeProps) => {
             <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle selected={!!props.selected} color={nodeColors.yellow}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.orange}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody selected={!!props.selected} color={nodeColors.yellow}>
+            <NodeBody selected={!!props.selected} color={nodeColors.orange}>
                 { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
             </NodeBody>
             <CustomHandle type="source"
@@ -117,10 +117,10 @@ const DecoratorNode = (props: NodeProps) => {
             <CustomHandle type="target"
                     position={Position.Top}
                     id={"entry"}/>
-            <NodeTitle selected={!!props.selected} color={nodeColors.puple}>
+            <NodeTitle selected={!!props.selected} color={nodeColors.purple}>
                 {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
             </NodeTitle>
-            <NodeBody selected={!!props.selected} color={nodeColors.puple}>
+            <NodeBody selected={!!props.selected} color={nodeColors.purple}>
                 { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
             </NodeBody>
             <CustomHandle type="source"

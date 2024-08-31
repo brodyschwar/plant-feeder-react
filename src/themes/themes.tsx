@@ -14,8 +14,9 @@ export const darkTheme = {
 };
 
 export const nodeColors = {
-    yellow: darkTheme.secondaryComplementary,
+    orange: darkTheme.secondaryComplementary,
     green: darkTheme.tertiaryComplementary,
-    puple: darkTheme.secondaryColor,
-    red: darkTheme.primaryColor
+    purple: darkTheme.secondaryColor,
+    red: darkTheme.primaryColor,
+    highlighted: '#ddd641'
 }
