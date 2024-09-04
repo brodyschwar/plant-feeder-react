@@ -23,6 +23,6 @@ export function isNodeEditorFile(obj: any): obj is NodeEditorFile {
 
 
 export const BEHAVIOR_TREE_TEMPLATE: NodeEditorFile = {
-    nodes: [{ id: 'root', type: 'rootNode', data: { label: 'Root' }, position: { x: 5, y: 5 }}],
+    nodes: [{ id: 'root', type: 'rootNode', data: { label: 'Root' }, position: { x: 5, y: 5 }, deletable: false}],
     edges: []
 }

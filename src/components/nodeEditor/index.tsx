@@ -68,7 +68,7 @@ const NodeEditor = () => {
     const [position, setPosition] = useState<XYPosition | null>(null);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
     const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
-    const { setInspectedNode } = useContext(EditorManagerContext);
+    const { setInspectedNode, copy, paste, setSelected } = useContext(EditorManagerContext);
     const { openFile, fileData } = useContext(FileManagerContext);
     const handleClose = () => {
         setPosition(null);
@@ -114,6 +114,24 @@ const NodeEditor = () => {
         setInspectedNode(node);
     }
 
+    const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+        const isCommandOrCtrl = event.metaKey || event.ctrlKey
+        if (isCommandOrCtrl) {
+            switch (event.key) {
+                case 'c':
+                    copy();
+                    event.stopPropagation();
+                    break;
+                case 'v':
+                    paste();
+                    event.stopPropagation();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [copy, paste])
+
     return (
         <Editor>
             <ReactFlow
@@ -131,6 +149,8 @@ const NodeEditor = () => {
                 defaultEdgeOptions={defaultEdgeOptions}
                 zoomOnDoubleClick={false}
                 onDoubleClick={onDoubleClick}
+                onKeyDown={handleKeyDown}
+                onSelectionChange={setSelected}
                 >
             <Background color={darkTheme.primaryColor} variant={BackgroundVariant.Dots} />
             </ReactFlow>

@@ -13,7 +13,7 @@ const StringDisplayItem = ({name, value, disabled, setValue} : {name: string, va
     const [tempVal, setTempVal] = useState(value)
     useEffect(() => setTempVal(value), [value])
     return (
-        <Tooltip key={name} title={value}>
+        <Tooltip key={name} title={tempVal}>
             <TextField
                 disabled={disabled}
                 label={capitalize(name)} 
@@ -25,6 +25,44 @@ const StringDisplayItem = ({name, value, disabled, setValue} : {name: string, va
         </Tooltip>
     )
 }
+
+const NumberDisplayItem = ({
+    name,
+    value,
+    disabled,
+    setValue
+}: {
+    name: string,
+    value: number,
+    disabled: boolean,
+    setValue: (val: any) => void
+}) => {
+    const [tempVal, setTempVal] = useState<number>(value);
+
+    useEffect(() => {
+        setTempVal(value);
+    }, [value]);
+
+    return (
+        <Tooltip key={name} title={String(value)}>
+            <TextField
+                disabled={disabled}
+                label={capitalize(name)}
+                variant="outlined"
+                type="number"
+                value={tempVal}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const newValue = parseFloat(event.target.value);
+                    if (!isNaN(newValue)) {
+                        setTempVal(newValue);
+                    }
+                }}
+                onBlur={() => setValue(tempVal)}
+                size="small"
+            />
+        </Tooltip>
+    );
+};
 
 const BoolDisplayItem = ({name, value, disabled, setValue} : {name: string, value: boolean, disabled: boolean, setValue: (val: any) => void}) => {
     const [isChecked, setIsChecked] = useState(value)
@@ -65,7 +103,10 @@ const NodeDataDisplay = ({id, data, disabled, hiddenKeys = []}: {id: string, dat
                         return <StringDisplayItem key={key+id} disabled={!!disabled} name={key} value={value} setValue={updateData(key)}/>
                     } else if (typeof(value) === 'boolean') {
                         return <BoolDisplayItem key={key+id} disabled={!!disabled} name={key} value={value} setValue={updateData(key)}/>
-                    } else {
+                    } else if (typeof(value) === 'number') {
+                        return <NumberDisplayItem key={key+id} disabled={!!disabled} name={key} value={value} setValue={updateData(key)}/>
+                    }
+                    else {
                         return <StringDisplayItem key={key+id} disabled={!!disabled} name={key} value={value ? String(value) : ""} setValue={updateData(key)}/>
                     }
                 })
