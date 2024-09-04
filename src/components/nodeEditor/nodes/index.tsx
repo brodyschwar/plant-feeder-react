@@ -130,4 +130,21 @@ const DecoratorNode = (props: NodeProps) => {
     )
 }
 
-export { RootNode, CompositeNode, BehaviorNode, DecoratorNode }
+
+const TreeNode = (props: NodeProps) => {
+    return (
+        <NodeContainer>
+            <CustomHandle type="target"
+                    position={Position.Top}
+                    id={"entry"}/>
+            <NodeTitle selected={!!props.selected} color={nodeColors.blue}>
+                {Boolean(props.data && props.data.label) ? String(props.data.label) : ""}
+            </NodeTitle>
+            <NodeBody selected={!!props.selected} color={nodeColors.blue}>
+                { props.data && <NodeDataDisplay disabled hiddenKeys={hiddenKeys} data={props.data} id={props.id}/> }
+            </NodeBody>
+        </NodeContainer>
+    );
+}
+
+export { RootNode, CompositeNode, BehaviorNode, DecoratorNode, TreeNode }

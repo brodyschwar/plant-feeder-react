@@ -4,7 +4,8 @@ import React, {
     MouseEvent, 
     useRef,
     useContext,
-    useEffect
+    useEffect,
+    useMemo
 } from 'react';
 import styled from '@emotion/styled';
 import { darkTheme } from '../../themes/themes';
@@ -30,14 +31,16 @@ import {
     RootNode, 
     CompositeNode, 
     BehaviorNode,
-    DecoratorNode
+    DecoratorNode,
+    TreeNode
 } from './nodes';
 import AddNodeMenu from './addNodeMenu';
 import { EditorManagerContext } from '../../contexts/nodeEditorContext';
 import { FileManagerContext } from '../../contexts/fileManager';
 import { NODE_LIST } from '../../data/generatedNodes';
-import { GenerateMenuMap } from '../../utils/nodeMenuSetup';
+import { BehaviorTreeNodeMenuLayout, GenerateMenuMap } from '../../utils/nodeMenuSetup';
 import { useAddNodeFromMenu } from '../../hooks/nodeHooks';
+import { useTreeNodes } from '../../hooks/fileManager';
 
 const Editor = styled.div`
     background: ${ darkTheme.degreeTwo };
@@ -57,7 +60,8 @@ const nodeTypes: NodeTypes = {
     rootNode: RootNode, 
     compositeNode: CompositeNode,
     behaviorNode: BehaviorNode,
-    decoratorNode: DecoratorNode
+    decoratorNode: DecoratorNode,
+    treeNode: TreeNode
 }
 
 
@@ -70,11 +74,18 @@ const NodeEditor = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
     const { setInspectedNode, copy, paste, setSelected } = useContext(EditorManagerContext);
     const { openFile, fileData } = useContext(FileManagerContext);
+    const treeNodes = useTreeNodes()
+    const baseMenu: BehaviorTreeNodeMenuLayout[] = useMemo(() => {
+        if (treeNodes !== null) {
+            return [...BASE_MENU, treeNodes]
+        } else {
+            return BASE_MENU
+        }
+    }, [treeNodes])
     const handleClose = () => {
         setPosition(null);
     }
     const addNodeFromMenu = useAddNodeFromMenu(handleClose)
-
     useEffect(() => {
         if (fileData) {
             setEdges(fileData.edges);
@@ -161,7 +172,7 @@ const NodeEditor = () => {
                     addNodeFromMenu={addNodeFromMenu(position, connectingNodeId.current)}
                     handleClose={handleClose}
                     menuItems={[]}
-                    subMenus={BASE_MENU}
+                    subMenus={baseMenu}
                     />
             }
         </Editor>
